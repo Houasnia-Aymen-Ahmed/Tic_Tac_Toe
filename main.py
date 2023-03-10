@@ -1,148 +1,12 @@
+import sys
 import random
 import time
 
-global brd
-brd = [[1,2,3],[4,5,6],[7,8,9]]
-
-def convertRowToCol(board):
-    tempboard = []
-    for i in range(3):
-        temp = []
-        for j in range(3):
-            temp.append(board[j][i])
-        tempboard.append(temp)
-    return tempboard
-
-def DisplayBoard():
-    for i in range(3):
-        print("-------------")
-        for j in range(3):
-            if j == 2:
-                print('|',brd[i][j],'|')
-                continue
-            print('|',brd[i][j],end=' ')
-    print("-------------")
-        
-
-def CheckPosition(cpos):
-    if cpos in [1,2,3,4,5,6,7,8,9]:
-        if brd[int(cpos/3-(1/30))][cpos%3-1] in ['X','O']:
-            print('This position is already filled !!\n')
-            return False
-        else:
-            return True
-
-    else:
-        print('Position non Valid !! Please Enter a valid position\n')
-        return False
-
-def FillPostion(fpos,fplayer):
-    finput = ''
-
-    if fplayer:
-        finput = 'x'
-    else:
-        finput = 'o'
-
-    if(CheckPosition(fpos)):
-            if fpos in [1,2,3]:
-                brd[int(fpos/3-(1/30))][(fpos%3)-1] = finput
-
-            elif fpos in [4,5,6]:
-                brd[int(fpos/3-(1/30))][(fpos%3)-1] = finput
-
-            elif fpos in [7,8,9]:
-                brd[int(fpos/3-(1/30))][(fpos%3)-1] = finput
-
-            return True
-        
-    else:
-        return False
-"""
-def checkWon():
-    check = False
-    colboard = convertRowToCol(brd)
-
-    for i in range(3):
-        if brd[i] == ['X','X','X']:
-            print('Player with "X" won !!\n')
-            check = True
-
-        elif brd[i] == ['O','O','O']:
-            print('Player with "O" won !!\n')
-            check = True
-    
-        elif colboard[i] == ['X','X','X']:
-            print('Player with "X" won !!\n')
-            check = True
-
-        elif colboard[i] == ['O','O','O']:
-            print('Player with "O" won !!\n')
-            check = True
-
-    if ((brd[0][0] == brd[1][1] and brd[0][0] == brd[2][2] == 'x' ) or (brd[0][2] == brd[1][1] and brd[1][1] == brd[2][0] )):
-        print('Player with "X" won !!\n')
-        check = True
-
-    elif  ((brd[0][0] == brd[1][1] and brd[0][0] == brd[2][2] == 'o' ) or (brd[0][2] == brd[1][1] and brd[1][1] == brd[2][0] )):
-        print('Player with "O" won !!\n')
-        check = True
-
-    return check
- """
-def checkRowsCols():
-    check = False
-    colboard = convertRowToCol(brd)
-
-    for i in range(3):
-        if brd[i] == ['X','X','X']:
-            print('Player with "X" won !!\n')
-            check = True
-
-        elif brd[i] == ['O','O','O']:
-            print('Player with "O" won !!\n')
-            check = True
-    
-        elif colboard[i] == ['X','X','X']:
-            print('Player with "X" won !!\n')
-            check = True
-
-        elif colboard[i] == ['O','O','O']:
-            print('Player with "O" won !!\n')
-            check = True
-
-        return check
-
-def checkDiagonal():
-    check = False
-    if ((brd[0][0] == brd[1][1] and brd[0][0] == brd[2][2] == 'x' ) or (brd[0][2] == brd[1][1] and brd[1][1] == brd[2][0] )):
-        print('Player with "X" won !!\n')
-        check = True
-
-    elif  ((brd[0][0] == brd[1][1] and brd[0][0] == brd[2][2] == 'o' ) or (brd[0][2] == brd[1][1] and brd[1][1] == brd[2][0] )):
-        print('Player with "O" won !!\n')
-        check = True
-
-    return check
-
-def checkDraw():
-    check = False
-    for i in range(1,10):
-        if (i in brd[0]) or (i in brd[1]) or (i in brd[2]):
-            check = True
-            break
-
-    return check
-
-
-def checkGameOver():
-    if checkRowsCols() or checkDiagonal():
-        return True
-    elif not checkDraw():
-        print('Draw!!')
-        return True
-    else:
-        return False
+board = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
 def displayWelcome():
     print('','='*30+" WELCOME! "+'='*30,)
@@ -159,9 +23,74 @@ def displayWelcome():
     print('|                                                                      |')
     print('','='*70)
 
-displayWelcome()
+def displayBoard(board):
+    for i in range(3):
+        print("-------------")
+        for j in range(3):
+            if j == 2:
+                print('|',board[i][j],'|')
+                continue
+            print('|',board[i][j],end=' ')
+    print("-------------")
 
-time.sleep(2)
+def checkPosition(pos):
+    if pos in [1,2,3,4,5,6,7,8,9]:
+        if board[int(pos/3-(1/30))][pos%3-1] in ['X','O']:
+            print('This position is already filled !!\n')
+            return False
+        else:
+            return True
+
+    else:
+        print('Position non Valid !! Please Enter a valid position\n')
+        return False
+
+def getRowCol(pos):
+    if pos == 1:
+        return(0,0)
+    elif pos == 2:
+        return(0,1)
+    elif pos == 3:
+        return(0,2)
+    elif pos == 4:
+        return(1,0)
+    elif pos == 5:
+        return(1,1)
+    elif pos == 6:
+        return(1,2)
+    elif pos == 7:
+        return(2,0)
+    elif pos == 8:
+        return(2,1)
+    elif pos == 9:
+        return(2,2)
+    else:
+        print('Invalid Position, try again')
+        return 0
+
+def checkWin(xo):
+    for row in board:
+        if row.count(xo) == 3:
+            return True
+
+    for i in range(3):
+        column = [board[j][i] for j in range(3)]
+        if column.count(xo) == 3:
+            return True
+
+    diagonal1 = [board[i][i] for i in range(3)]
+    diagonal2 = [board[i][2-i] for i in range(3)]
+
+    if diagonal1.count(xo) == 3 or diagonal2.count(xo) == 3:
+        return True
+
+    return False
+
+def checkDraw(board):
+    for row in board:
+        for i in range(1,10):
+            if i in row: return False
+    return True
 
 def startPlayer():
     rand = random.randint(1,2)
@@ -172,24 +101,49 @@ def startPlayer():
 
 player = startPlayer()
 
-DisplayBoard()
+def play(board):
 
+    displayWelcome()
+    time.sleep(2)
+    player = startPlayer()
+    
+    while True:
+        displayBoard(board)
 
-while True:
-    if player:
-        print('PLAYER1 is playing...,',end=' ')
-        xo = ['X','O']
-    else:
-        print('PLAYER2 is playing...,',end=' ')
-        xo = ['O','X']
+        if player:
+            print('PLAYER1 is playing...,',end=' ')
+            xo = 'X'
+        else:
+            print('PLAYER2 is playing...,',end=' ')
 
-    print('Please enter "'+xo[0]+'"',end=' ')
-    xpos = int(input('in the position: '))
-    if(FillPostion(xpos,player)):
-        DisplayBoard()
-        if checkGameOver():
-            break
-    else:
-        continue
+            xo = 'O'
 
-    player = not player
+        print('Please enter "'+ xo +'"',end=' ')
+        value_pos = int(input('in the position: '))
+
+        if value_pos not in [1,2,3,4,5,6,7,8,9]:
+            print('Please enter a valid position')
+            continue
+
+        row,col = getRowCol(value_pos)
+
+        if board[row][col] != 'X' and board[row][col] != 'O':
+            board[row][col] = xo
+
+        else:
+            print("That spot is already taken.")
+            continue
+
+        if checkWin(xo):
+            displayBoard(board)
+            print("Player 1 Wins !" if player == True else "Player 2 Wins !")
+            sys.exit(0)
+
+        if checkDraw(board):
+            displayBoard(board)
+            print("It's a tie!")
+            sys.exit(0)
+        
+        player =  not player
+
+play(board)
